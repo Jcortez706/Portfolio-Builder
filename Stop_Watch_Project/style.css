@@ -1,0 +1,19 @@
+.counter {
+  max-width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 15rem;
+}
+.timer {
+  font-size: 50px;
+}
+.control {
+  max-width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 5rem;
+}
+.btn {
+  max-width: 150px;
+  text-align: center;
+}
