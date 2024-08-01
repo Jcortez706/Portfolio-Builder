@@ -74,22 +74,58 @@ async function getWeather() {
 
 function updateData(forecast) {
   forecast.forEach((period) => {
-    const forecastImg = document.createElement('img');
-    forecastImg.classList.add('forecast__img');
-    const forecastDiv = document.createElement('div');
-    forecastDiv.classList.add('forecast__div');
-    const forecastPeriod = document.createElement('h1');
-    forecastPeriod.classList.add('forecast__day');
-    const forecastDetails = document.createElement('p');
-    forecastDetails.classList.add('forecast__details');
-    forecastPeriod.innerHTML = period.name;
-    forecastDetails.innerHTML = period.detailedForecast;
-    forecastImg.src = period.icon;
+    const high = getHighTemp(period.detailedForecast);
+    const forecastDiv = createForecastDiv();
+    const forecastImg = createForecastImg(period.icon);
+    const forecastPeriod = createForecastPeriod(period.name);
+    const forecastHigh = createForecastHigh(period.detailedForecast);
+    const forecastDetails = createForecastDetails(period.detailedForecast);
     section.append(forecastDiv);
-    forecastDiv.append(forecastPeriod);
-    forecastDiv.append(forecastDetails);
-    forecastDiv.append(forecastImg);
+    forecastDiv.append(forecastPeriod, forecastDetails, forecastImg);
+    if (high != undefined) {
+      forecastDiv.append(forecastHigh);
+    }
   });
+}
+
+function createForecastDiv() {
+  const div = document.createElement('div');
+  div.classList.add('forecast__div');
+  return div;
+}
+
+function createForecastImg(src) {
+  const img = document.createElement('img');
+  img.classList.add('forecast__img');
+  img.src = src;
+  return img;
+}
+function createForecastHigh(details) {
+  const high = document.createElement('p');
+  high.classList.add('forecast__high');
+  high.textContent = `High: ${getHighTemp(details)}`;
+  return high;
+}
+function createForecastPeriod(name) {
+  const h1 = document.createElement('h1');
+  h1.classList.add('forecast__day');
+  h1.textContent = name;
+  return h1;
+}
+
+function createForecastDetails(details) {
+  const p = document.createElement('p');
+  p.classList.add('forecast__details');
+  p.textContent = details;
+  return p;
+}
+
+function getHighTemp(detailedForecast) {
+  const startingIndex = detailedForecast.indexOf('near') + 5;
+  if (detailedForecast.indexOf('near') != -1) {
+    const highTemp = detailedForecast.slice(startingIndex, startingIndex + 2);
+    return highTemp;
+  }
 }
 
 function deleteData() {
